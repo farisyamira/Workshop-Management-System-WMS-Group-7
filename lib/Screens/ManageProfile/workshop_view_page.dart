@@ -180,21 +180,20 @@ class _ViewProfilePageWorkshopOwnerState
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: Colors.blue.shade100,
-                    child:
-                        profileImageUrl.isNotEmpty
-                            ? ClipOval(
-                              child: Image.network(
-                                profileImageUrl,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                            : const Icon(
-                              Icons.person,
-                              size: 50,
-                              color: Colors.blue,
+                    child: profileImageUrl.isNotEmpty
+                        ? ClipOval(
+                            child: Image.network(
+                              profileImageUrl,
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
                             ),
+                          )
+                        : const Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.blue,
+                          ),
                   ),
                   const SizedBox(height: 24),
                   _buildProfileSection("Personal Info", [
@@ -253,79 +252,102 @@ class _ViewProfilePageWorkshopOwnerState
                   ]),
                   const SizedBox(height: 20),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          final userData = await fetchUserData();
-                          if (userData != null) {
-                            final updated = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (_) => AddProfilePageWorkshopOwner(
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              final userData = await fetchUserData();
+                              if (userData != null) {
+                                final updated = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        AddProfilePageWorkshopOwner(
                                       workshopOwnerId: widget.workshopOwnerId,
                                       existingProfile: userData,
                                     ),
+                                  ),
+                                );
+                                if (updated == true) {
+                                  _loadUserData();
+                                }
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
                               ),
-                            );
-                            if (updated == true) {
-                              _loadUserData();
-                            }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 14),
+                            ),
+                            child: const Text(
+                              'Add Profile',
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black87),
+                            ),
                           ),
                         ),
-                        child: const Text(
-                          'Add Profile',
-                          style: TextStyle(fontSize: 16, color: Colors.black87),
-                        ),
                       ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final userData = await fetchUserData();
-                          if (userData != null) {
-                            final updated = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (_) => EditProfilePageWorkshopOwner(
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              final userData = await fetchUserData();
+                              if (userData != null) {
+                                final updated = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        EditProfilePageWorkshopOwner(
                                       workshopOwnerId: widget.workshopOwnerId,
                                       existingProfile: userData,
                                     ),
+                                  ),
+                                );
+                                if (updated == true) {
+                                  _loadUserData();
+                                }
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
                               ),
-                            );
-                            if (updated == true) {
-                              _loadUserData();
-                            }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 14),
+                            ),
+                            child: const Text(
+                              'Edit Profile',
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black87),
+                            ),
                           ),
-                        ),
-                        child: const Text(
-                          'Edit Profile',
-                          style: TextStyle(fontSize: 16, color: Colors.black87),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: _confirmDelete,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: ElevatedButton(
+                            onPressed: _confirmDelete,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 14),
+                            ),
+                            child: const Text(
+                              'Delete Profile',
+                              style: TextStyle(
+                                  fontSize: 12, color: Colors.black87),
+                            ),
                           ),
-                        ),
-                        child: const Text(
-                          'Delete Profile',
-                          style: TextStyle(fontSize: 16, color: Colors.black87),
                         ),
                       ),
                     ],
