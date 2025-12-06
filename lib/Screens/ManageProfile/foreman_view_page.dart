@@ -31,11 +31,10 @@ class _ViewProfilePageForemanState extends State<ViewProfilePageForeman> {
 
   Future<Map<String, dynamic>?> fetchUserData() async {
     try {
-      final doc =
-          await FirebaseFirestore.instance
-              .collection('foremen')
-              .doc(widget.foremanId)
-              .get();
+      final doc = await FirebaseFirestore.instance
+          .collection('foremen')
+          .doc(widget.foremanId)
+          .get();
       return doc.exists ? doc.data() : null;
     } catch (e) {
       debugPrint('Error fetching foreman data: $e');
@@ -79,24 +78,23 @@ class _ViewProfilePageForemanState extends State<ViewProfilePageForeman> {
   Future<bool?> _confirmDelete() async {
     return showDialog<bool>(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Delete Profile'),
-            content: const Text(
-              'Are you sure you want to delete this profile? This action cannot be undone.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context, true),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                child: const Text('Delete'),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Profile'),
+        content: const Text(
+          'Are you sure you want to delete this profile? This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
           ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -158,8 +156,7 @@ class _ViewProfilePageForemanState extends State<ViewProfilePageForeman> {
           }
 
           final userData = snapshot.data!;
-          final profileImageUrl =
-              (userData['ForemanProfilePicture'] ?? '') as String;
+          final profileImageUrl = (userData['ForemanProfilePicture'] ?? '') as String;
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
@@ -196,21 +193,20 @@ class _ViewProfilePageForemanState extends State<ViewProfilePageForeman> {
                       CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.blue.shade100,
-                        child:
-                            profileImageUrl.isNotEmpty
-                                ? ClipOval(
-                                  child: Image.network(
-                                    profileImageUrl,
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover,
-                                  ),
-                                )
-                                : const Icon(
-                                  Icons.person,
-                                  size: 50,
-                                  color: Colors.blue,
+                        child: profileImageUrl.isNotEmpty
+                            ? ClipOval(
+                                child: Image.network(
+                                  profileImageUrl,
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
                                 ),
+                              )
+                            : const Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Colors.blue,
+                              ),
                       ),
                       const SizedBox(height: 16),
                       _buildProfileCard("Personal Info", [
@@ -254,87 +250,102 @@ class _ViewProfilePageForemanState extends State<ViewProfilePageForeman> {
                       ]),
                       const SizedBox(height: 20),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          ElevatedButton(
-                            onPressed: () async {
-                              final userData = await fetchUserData();
-                              if (userData != null) {
-                                final updated = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (_) => AddProfilePageForeman(
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 4),
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  final userData = await fetchUserData();
+                                  if (userData != null) {
+                                    final updated = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => AddProfilePageForeman(
                                           foremanId: widget.foremanId,
                                           existingProfile: userData,
                                         ),
+                                      ),
+                                    );
+                                    if (updated == true) {
+                                      _loadUserData();
+                                    }
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
-                                );
-                                if (updated == true) {
-                                  _loadUserData();
-                                }
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            child: const Text(
-                              'Add Profile',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black87,
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                ),
+                                child: const Text(
+                                  'Add Profile',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.black87,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              final userData = await fetchUserData();
-                              if (userData != null) {
-                                final updated = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (_) => EditProfilePageForeman(
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 4),
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  final userData = await fetchUserData();
+                                  if (userData != null) {
+                                    final updated = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => EditProfilePageForeman(
                                           foremanId: widget.foremanId,
                                           existingProfile: userData,
                                         ),
+                                      ),
+                                    );
+                                    if (updated == true) {
+                                      _loadUserData();
+                                    }
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
-                                );
-                                if (updated == true) {
-                                  _loadUserData();
-                                }
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            child: const Text(
-                              'Edit Profile',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black87,
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                ),
+                                child: const Text(
+                                  'Edit Profile',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.black87,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                          ElevatedButton(
-                            onPressed: _handleDelete,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            child: const Text(
-                              'Delete Profile',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black87,
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 4),
+                              child: ElevatedButton(
+                                onPressed: _handleDelete,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                ),
+                                child: const Text(
+                                  'Delete Profile',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.black87,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
